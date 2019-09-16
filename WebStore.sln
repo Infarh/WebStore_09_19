@@ -17,6 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore", "UI\WebStore\Web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStore.ServiceHosting", "Services\WebStore.ServiceHosting\WebStore.ServiceHosting.csproj", "{FE611E48-7FF7-4045-A8BA-8FD8F36BC690}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStore.Services", "Services\WebStore.Services\WebStore.Services.csproj", "{DD2A3D6C-8979-479E-9AD7-01E330584A53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStore.Interfaces", "Services\WebStore.Interfaces\WebStore.Interfaces.csproj", "{2DC7FF3F-5417-45D7-A4F4-0D636FC6A54C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{FE611E48-7FF7-4045-A8BA-8FD8F36BC690}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE611E48-7FF7-4045-A8BA-8FD8F36BC690}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE611E48-7FF7-4045-A8BA-8FD8F36BC690}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD2A3D6C-8979-479E-9AD7-01E330584A53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD2A3D6C-8979-479E-9AD7-01E330584A53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD2A3D6C-8979-479E-9AD7-01E330584A53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD2A3D6C-8979-479E-9AD7-01E330584A53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DC7FF3F-5417-45D7-A4F4-0D636FC6A54C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DC7FF3F-5417-45D7-A4F4-0D636FC6A54C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DC7FF3F-5417-45D7-A4F4-0D636FC6A54C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DC7FF3F-5417-45D7-A4F4-0D636FC6A54C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +60,8 @@ Global
 		{E74E2C2B-B073-4304-9B0C-7BF5DFA8C6B4} = {8BD5B4A2-5280-4B6A-9F33-4189D66F88B6}
 		{8247C9E3-1D54-42E2-93A6-B5AC877DBD5C} = {4F876DFA-4EFE-4975-9E23-E50BB1D013B5}
 		{FE611E48-7FF7-4045-A8BA-8FD8F36BC690} = {8BD5B4A2-5280-4B6A-9F33-4189D66F88B6}
+		{DD2A3D6C-8979-479E-9AD7-01E330584A53} = {8BD5B4A2-5280-4B6A-9F33-4189D66F88B6}
+		{2DC7FF3F-5417-45D7-A4F4-0D636FC6A54C} = {8BD5B4A2-5280-4B6A-9F33-4189D66F88B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4E50736C-937D-41A4-B9AA-F79FFDB6A160}
