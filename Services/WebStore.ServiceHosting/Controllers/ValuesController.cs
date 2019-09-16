@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebStore.ServiceHosting.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]")] // api/Values
     [ApiController]
     public class ValuesController : ControllerBase
     {
