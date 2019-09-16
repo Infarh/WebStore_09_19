@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebStore.Clients.Values;
 using WebStore.DAL.Context;
 using WebStore.Data;
 using WebStore.Domain.Entities;
 using WebStore.Infrastructure.Implementations;
 using WebStore.Infrastructure.Interfaces;
+using WebStore.Interfaces.Api;
 using WebStore.Models;
 
 namespace WebStore
@@ -25,6 +27,8 @@ namespace WebStore
         {
             services.AddDbContext<WebStoreContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConection")));
+
+            services.AddTransient<IValuesService, ValuesClient>();
 
             services.AddTransient<WebStoreContextInitializer>();
 
