@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WebStore.Data;
+using WebStore.Domain.DTO;
 using WebStore.Domain.Entities;
 using WebStore.Infrastructure.Interfaces;
 
@@ -12,17 +13,58 @@ namespace WebStore.Infrastructure.Implementations
 
         public IEnumerable<Brand> GetBrands() => TestData.Brands;
 
-        public IEnumerable<Product> GetProducts(ProductFilter Filter)
+        public IEnumerable<ProductDTO> GetProducts(ProductFilter Filter)
         {
             var products = TestData.Products;
-            if (Filter is null) return products;
+            if (Filter is null) return products.Select(product => new ProductDTO
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Order = product.Order,
+                ImageUrl = product.ImageUrl,
+                Price = product.Price,
+                Brand = product.Brand is null ? null : new BrandDTO
+                {
+                    Id = product.Brand.Id,
+                    Name = product.Brand.Name
+                }
+            });
+
             if (Filter.BrandId != null)
                 products = products.Where(product => product.BrandId == Filter.BrandId);
             if (Filter.SectionId != null)
                 products = products.Where(product => product.SectionId == Filter.SectionId);
-            return products;
+            return products.Select(product => new ProductDTO
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Order = product.Order,
+                ImageUrl = product.ImageUrl,
+                Price = product.Price,
+                Brand = product.Brand is null ? null : new BrandDTO
+                {
+                    Id = product.Brand.Id,
+                    Name = product.Brand.Name
+                }
+            });
         }
 
-        public Product GetProductById(int id) => TestData.Products.FirstOrDefault(product => product.Id == id);
+        public ProductDTO GetProductById(int id)
+        {
+            var product = TestData.Products.FirstOrDefault(p => p.Id == id);
+            return new ProductDTO
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Order = product.Order,
+                ImageUrl = product.ImageUrl,
+                Price = product.Price,
+                Brand = product.Brand is null ? null : new BrandDTO
+                {
+                    Id = product.Brand.Id,
+                    Name = product.Brand.Name
+                }
+            };
+        }
     }
 }
