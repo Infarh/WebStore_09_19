@@ -9,7 +9,8 @@ using WebStore.Infrastructure.Interfaces;
 
 namespace WebStore.ServiceHosting.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
+    [Route("api/orders")]
     [ApiController, Produces("application/json")]
     public class OrdersController : ControllerBase, IOrderService
     {
@@ -29,7 +30,7 @@ namespace WebStore.ServiceHosting.Controllers
             return _OrderService.GetOrderById(id);
         }
 
-        [HttpPost("{UserName}")]
+        [HttpPost("{UserName?}")]
         public OrderDTO CreateOrder([FromBody] CreateOrderModel OrderModel, string UserName)
         {
             return _OrderService.CreateOrder(OrderModel, UserName);
