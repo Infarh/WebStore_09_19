@@ -70,7 +70,7 @@ namespace WebStore.ServiceHosting
             services.AddSwaggerGen(opt => //https://github.com/domaindrivendev/Swashbuckle.AspNetCore
             {
                 opt.SwaggerDoc("v1", new Info { Title = "WebStore.API", Version = "v1" });
-                opt.IncludeXmlComments(@"WebStore.ServiceHosting.xml");
+                //opt.IncludeXmlComments(@"WebStore.ServiceHosting.xml");
             }); 
 
             #endregion

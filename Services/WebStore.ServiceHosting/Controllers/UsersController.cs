@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using WebStore.DAL.Context;
 using WebStore.Domain.DTO.Identity;
 using WebStore.Domain.Entities;
@@ -18,17 +19,24 @@ namespace WebStore.ServiceHosting.Controllers
     [ApiController, Produces("application/json")]
     public class UsersController : ControllerBase
     {
+        private readonly ILogger<UsersController> _Logger;
         private readonly UserStore<User> _UserStore;
 
-        public UsersController(WebStoreContext db)
+        public UsersController(WebStoreContext db, ILogger<UsersController> Logger)
         {
+            _Logger = Logger;
             _UserStore = new UserStore<User>(db) { AutoSaveChanges = true };
         }
 
         #region Users
 
         [HttpGet("AllUsers")]
-        public async Task<IEnumerable<User>> GetAllUsers() => await _UserStore.Users.ToArrayAsync();
+        public async Task<IEnumerable<User>> GetAllUsers()
+        {
+            _Logger.LogInformation("Кто-то запросил информацию обо всех пользователях системы");
+
+            return await _UserStore.Users.ToArrayAsync();
+        }
 
         [HttpPost("UserId")]
         public async Task<string> GetUserIdAsync([FromBody] User user) => await _UserStore.GetUserIdAsync(user);
@@ -46,7 +54,22 @@ namespace WebStore.ServiceHosting.Controllers
         public Task SetNormalizedUserNameAsync([FromBody] User user, string name) => _UserStore.SetNormalizedUserNameAsync(user, name);
 
         [HttpPost("User")]
-        public async Task<bool> CreateAsync([FromBody] User user) => (await _UserStore.CreateAsync(user)).Succeeded;
+        public async Task<bool> CreateAsync([FromBody] User user)
+        {
+            using(_Logger.BeginScope("Создание нового пользователя {0}", user.UserName))
+                try
+                {
+                    var succeeded = (await _UserStore.CreateAsync(user)).Succeeded;
+                    _Logger.LogInformation("Новый пользователь {0} успешно создан", user.UserName);
+                    return succeeded;
+                }
+                catch (Exception error)
+                {
+                    _Logger.LogError(error, "Ошибка {0} при создании нового пользователя {1}", error.Message, user.UserName);
+                    throw;
+                }
+
+        }
 
         [HttpPut("User")]
         public async Task<bool> UpdateAsync([FromBody] User user) => (await _UserStore.UpdateAsync(user)).Succeeded;
