@@ -30,40 +30,17 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<WebStoreContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConection")));
-
             services.AddTransient<IValuesService, ValuesClient>();
 
-            //services.AddTransient<WebStoreContextInitializer>();
 
             services.AddSingleton<IEmployeesData, EmployeesClient>();
-            //services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
-            //services.AddSingleton<IProductData, InMemoryProductData>();
             services.AddScoped<IProductData, ProductsClient>();
-            //services.AddScoped<IProductData, SqlProductData>();
             services.AddScoped<ICartService, CookieCartService>();
             services.AddScoped<IOrderService, OrdersClient>();
-            //services.AddScoped<IOrderService, SqlOrdersService>();
 
-            services.AddIdentity<User, IdentityRole>(options =>
-                {
-                    // конфигурация cookies возможна здесь
-                })
-                //.AddEntityFrameworkStores<WebStoreContext>()
-                .AddDefaultTokenProviders();
+            services.AddIdentity<User, IdentityRole>().AddDefaultTokenProviders();
 
             #region Custom identity implementation
-
-            //IUserStore<User>,
-            //IUserRoleStore<User>,
-            //IUserPasswordStore<User>,
-            //IUserEmailStore<User>,
-            //IUserPhoneNumberStore<User>,
-            //IUserClaimStore<User>,
-            //IUserTwoFactorStore<User>,
-            //IUserLoginStore<User>,
-            //IUserLockoutStore<User>
 
             services.AddTransient<IUserStore<User>, UsersClient>();
             services.AddTransient<IUserRoleStore<User>, UsersClient>();
@@ -79,22 +56,6 @@ namespace WebStore
 
             #endregion
 
-            services.Configure<IdentityOptions>(cfg =>
-            {
-                cfg.Password.RequiredLength = 3;
-                cfg.Password.RequireDigit = false;
-                cfg.Password.RequireLowercase = false;
-                cfg.Password.RequireUppercase = false;
-                cfg.Password.RequireNonAlphanumeric = false;
-                cfg.Password.RequiredUniqueChars = 3;
-
-                cfg.Lockout.MaxFailedAccessAttempts = 10;
-                cfg.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
-                cfg.Lockout.AllowedForNewUsers = true;
-
-                cfg.User.RequireUniqueEmail = false; // грабли!
-            });
-
             services.ConfigureApplicationCookie(cfg =>
             {
                 cfg.Cookie.HttpOnly = true;
@@ -108,27 +69,11 @@ namespace WebStore
                 cfg.SlidingExpiration = true;
             });
 
-            services.AddMvc(opt =>
-            {
-                //opt.Filters.Add<ActionFilter>();
-                //opt.Conventions.Add(new TestConvention());
-            });
-
-            services.AddAutoMapper(opt =>
-            {
-                opt.CreateMap<Employee, Employee>();
-            });
-
-            //AutoMapper.Mapper.Initialize(opt =>
-            //{
-            //    opt.CreateMap<Employee, Employee>();
-            //});
+            services.AddMvc();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env/*, WebStoreContextInitializer db*/)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //db.InitializeAsync().Wait();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
