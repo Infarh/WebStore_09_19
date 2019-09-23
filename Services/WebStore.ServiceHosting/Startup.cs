@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Swagger;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities;
 using WebStore.Infrastructure.Implementations;
@@ -63,6 +64,16 @@ namespace WebStore.ServiceHosting
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            #region Swagger
+
+            services.AddSwaggerGen(opt => //https://github.com/domaindrivendev/Swashbuckle.AspNetCore
+            {
+                opt.SwaggerDoc("v1", new Info { Title = "WebStore.API", Version = "v1" });
+                opt.IncludeXmlComments(@"WebStore.ServiceHosting.xml");
+            }); 
+
+            #endregion
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, WebStoreContextInitializer db)
@@ -77,6 +88,17 @@ namespace WebStore.ServiceHosting
             {
                 app.UseHsts();
             }
+
+            #region Swagger
+
+            app.UseSwagger();
+            app.UseSwaggerUI(opt =>
+            {
+                opt.SwaggerEndpoint("/swagger/v1/swagger.json", "WebStore.API");
+                opt.RoutePrefix = string.Empty;
+            }); 
+
+            #endregion
 
             app.UseHttpsRedirection();
             app.UseMvc();
