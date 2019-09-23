@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using WebStore.Clients.Base;
 using WebStore.Domain.DTO.Order;
+using WebStore.Domain.Models;
 using WebStore.Infrastructure.Interfaces;
 
 namespace WebStore.Clients.Orders
