@@ -35,23 +35,27 @@ namespace WebStore.Controllers
                 UserName = model.UserName
             };
             // Пытаемся зарегистрировать его в системе с указанным паролем
-            Logger.LogInformation("Регистрация новго пользовтеля {0}", model.UserName);
-            var creation_result = await _UserManager.CreateAsync(new_user, model.Password);
-            if (creation_result.Succeeded) // Если получилось
+
+            using (Logger.BeginScope("Регистрация нового пользователя {0}", model.UserName))
             {
-                Logger.LogInformation("Пользователь {0} успешно зарегистрирован.", model.UserName);
-                await _SignInManager.SignInAsync(new_user, false); // То сразу логиним его на сайте
+                Logger.LogInformation("Регистрация новго пользовтеля {0}", model.UserName);
+                var creation_result = await _UserManager.CreateAsync(new_user, model.Password);
+                if (creation_result.Succeeded) // Если получилось
+                {
+                    Logger.LogInformation("Пользователь {0} успешно зарегистрирован.", model.UserName);
+                    await _SignInManager.SignInAsync(new_user, false); // То сразу логиним его на сайте
 
-                Logger.LogInformation("Пользователь {0} вошёл в систему.", model.UserName);
-                return RedirectToAction("Index", "Home"); // и отправляем на главную страницу
+                    Logger.LogInformation("Пользователь {0} вошёл в систему.", model.UserName);
+                    return RedirectToAction("Index", "Home"); // и отправляем на главную страницу
+                }
+
+                Logger.LogWarning("Ошибка регистрации пользователя {0}: {1}",
+                    model.UserName,
+                    string.Join(", ", creation_result.Errors.Select(e => e.Description)));
+
+                foreach (var error in creation_result.Errors)         // Если что-то пошло не так...
+                    ModelState.AddModelError("", error.Description);  // Все ошибки заносим в состояние модели
             }
-
-            Logger.LogWarning("Ошибка регистрации пользователя {0}: {1}",
-                model.UserName,
-                string.Join(", ", creation_result.Errors.Select(e => e.Description)));
-
-            foreach (var error in creation_result.Errors)         // Если что-то пошло не так...
-                ModelState.AddModelError("", error.Description);  // Все ошибки заносим в состояние модели
 
             return View(model);                                   // И модель отправляем на доработку
         }
@@ -67,14 +71,14 @@ namespace WebStore.Controllers
 
             if (login_result.Succeeded)
             {
-                Logger.LogInformation("Пользователь {0} вошёл в систему");
+                Logger.LogInformation("Пользователь {0} вошёл в систему", login.UserName);
 
                 return Url.IsLocalUrl(login.ReturnUrl)
                     ? (IActionResult)Redirect(login.ReturnUrl)
                     : RedirectToAction("Index", "Home");
             }
 
-            Logger.LogWarning("Ошибка входа пользователя {0} в систему");
+            Logger.LogWarning("Ошибка входа пользователя {0} в систему", login.UserName);
             ModelState.AddModelError("", "Имя пользователя, или пароль неверны!");
             return View(login);
         }
