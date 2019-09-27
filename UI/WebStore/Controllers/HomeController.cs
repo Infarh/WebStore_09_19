@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace WebStore.Controllers
@@ -11,6 +12,8 @@ namespace WebStore.Controllers
 
         //[ActionFilterAsync]
         public IActionResult Index() => View();
+
+        public IActionResult ThrowException() => throw new ApplicationException("Отладочное исключение");
 
         public IActionResult ContactUs() => View();
 
