@@ -3,12 +3,8 @@
 }
 
 <div class="container">
-    <div class="breadcrumbs">
-        <ol class="breadcrumb">
-            <li><a asp-controller="Home" asp-action="Index">Главная</a></li>
-            <li class="active"><a asp-controller="Catalog" asp-action="Shop">Каталог товаров</a></li>
-        </ol>
-    </div>
+    @*<vc:bread-crumbs/>*@
+    @await Component.InvokeAsync("BreadCrumbs");
 
     @RenderBody()
 </div>
