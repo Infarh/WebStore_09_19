@@ -60,7 +60,10 @@
         $(function() {
             Cart.init({
                 getCartViewLink: "@Url.Action("GetCartView","Cart")",
-                addToCartLink: "@Url.Action("AddToCartAJAX","Cart")"
+                addToCartLink: "@Url.Action("AddToCartAJAX","Cart")",
+                decrementLink: "@Url.Action("DecrementFromCartAJAX","Cart")",
+                removeFromCartLink: "@Url.Action("RemoveFromCartAJAX","Cart")",
+                removeAllLink: "@Url.Action("RemoveAllAJAX","Cart")"
             });
         });
     </script>

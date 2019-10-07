@@ -100,6 +100,24 @@ namespace WebStore.Controllers
             //return Ok();
         }
 
+        public IActionResult DecrementFromCartAJAX(int id)
+        {
+            _CartService.DecrementFromCart(id);
+            return Json(new { id, message = $"Количество товара id:{id} в корзине уменьшено на 1" });
+        }
+
+        public IActionResult RemoveFromCartAJAX(int id)
+        {
+            _CartService.RemoveFromCart(id);
+            return Json(new { id, message = $"Товар id:{id} удалён из корзины" });
+        }
+
+        public IActionResult RemoveAllAJAX()
+        {
+            _CartService.RemoveAll();
+            return Json(new { message = "Корзина очищена" });
+        }
+
         #endregion
     }
 }

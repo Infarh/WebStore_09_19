@@ -1,17 +1,23 @@
 ﻿Cart = {
 	_properties: {
 		addToCartLink: "",
+		decrementLink: "",
+		removeFromCartLink: "",
+		removeAllLink: "",
 		getCartViewLink: ""
 	},
 
 	init: function(properties) {
 		$.extend(Cart._properties, properties);
 
-		Cart.initAddToCart();
+		Cart.initEvents();
 	},
 
-	initAddToCart: function() {
+	initEvents: function() {
 		$("a.CallAddToCart").click(Cart.addToCart);
+		$(".cart_quantity_up").click(Cart.incrementItem);
+		$(".cart_quantity_down").click(Cart.decrementItem);
+		$(".cart_quantity_delete").click(Cart.removeFromCart);
 	},
 
 	addToCart: function(event) {
@@ -41,5 +47,11 @@
 		$.get(Cart._properties.getCartViewLink)
 			.done(function(result) { container.html(result); })
 			.fail(function() { console.log("refreshCartView error"); });
-	}
+	},
+
+	incrementItem: function () { },
+
+	decrementItem: function () { },
+
+	removeFromCart: function () { }
 };
