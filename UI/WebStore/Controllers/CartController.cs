@@ -88,5 +88,16 @@ namespace WebStore.Controllers
             ViewBag.OrderId = id;
             return View();
         }
+
+        #region AJAX api
+
+        public IActionResult AddToCartAJAX(int id)
+        {
+            _CartService.AddToCart(id);
+            return Json(new { id, message = $"Товар id:{id} добавлен в корзину" });
+            //return Ok();
+        }
+
+        #endregion
     }
 }
