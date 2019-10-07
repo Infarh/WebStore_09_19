@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using WebStore.Clients.Employees;
 using WebStore.Clients.Orders;
 using WebStore.Clients.Products;
@@ -81,6 +82,7 @@ namespace WebStore
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory log)
         {
             log.AddLog4Net();
+            //log.AddSerilog();
 
             if (env.IsDevelopment())
             {
@@ -91,6 +93,8 @@ namespace WebStore
 
             app.UseStaticFiles();
             app.UseDefaultFiles();
+
+            app.UseSerilogRequestLogging();
 
             //app.UseWelcomePage("/Welcome");
 

@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using WebStore.Controllers;
+using RazorGenerator.Mvc;
+using WebStore.Tests.Service;
 using Assert = Xunit.Assert;
 
 namespace WebStore.Tests.Controllers
@@ -41,7 +46,11 @@ namespace WebStore.Tests.Controllers
         public void Index_Returns_View()
         {
             var result = _Controller.Index();
-            Assert.IsType<ViewResult>(result);
+            var view_result = Assert.IsType<ViewResult>(result);
+            var html = view_result.ToHtml(new DefaultHttpContext
+            {
+                //Features = { new RoutingFeature() }
+            });
         }
 
         [TestMethod]
