@@ -52,7 +52,7 @@
     <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script>
     
     <script>
-        OnDataLoaded = function(data) {
+        OnDataLoaded = data => {
             var host = $("#ClientPanel");
             host.empty();
             host.append("msg:" + data.message);

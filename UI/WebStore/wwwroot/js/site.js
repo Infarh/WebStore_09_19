@@ -1,6 +1,6 @@
 /*price range*/
 
-$('#sl2').slider();
+//$('#sl2').slider();
 
 var RGBChange = function ()
 {

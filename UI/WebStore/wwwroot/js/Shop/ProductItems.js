@@ -3,38 +3,40 @@
 		getUrl: ""
 	},
 
-	init: function(properties) {
+	init: properties => {
 		$.extend(ProductItems._properties, properties);
 		$(".pagination li a").click(ProductItems.clickOnPage);
 	},
 
-	clickOnPage: function(event) {
+	clickOnPage: function (event) {
 		event.preventDefault();
+		const button = $(this);
 
-		if ($(this).prop("href").length > 0) {
-			var page = $(this).data("page");
-			$("#itemsContainer").LoadingOverlay("show");
+		if (button.prop("href").length > 0) {
+			var page = button.data("page");
+			const container = $("#itemsContainer");
+			container.LoadingOverlay("show");
 
-			var data = $(this).data();
+			const data = button.data();
 
-			var query = "";
-			for (var key in data) {
+			let query = "";
+			for (let key in data) {
 				if (data.hasOwnProperty(key))
-					query += key + "=" + data[key] + "&" ;
+					query += `${key}=${data[key]}&`;
 			}
 
-			$.get(ProductItems._properties.getUrl + "?" + query)
-				.done(function(result) {
-					$("#itemsContainer").html(result);
-					$("#itemsContainer").LoadingOverlay("hide");
+			$.get(`${ProductItems._properties.getUrl}?${query}`)
+				.done(result => {
+					container.html(result);
+					container.LoadingOverlay("hide");
 
 					$(".pagination li").removeClass("active");
 					$(".pagination li a").prop("href", "#");
-					$(".pagination li a[data-page=" + page + "]")
+					$(`.pagination li a[data-page=${page}]`)
 						.removeAttr("href")
 						.parent().addClass("active");
 				})
-				.fail(function() {
+				.fail(() => {
 					console.log("clickOnPage getItems error");
 				});
 		}
