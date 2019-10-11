@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using WebStore.Domain.Entities;
@@ -70,9 +71,10 @@ namespace WebStore.Controllers
                 });
         }
 
-        public IActionResult GetFiltredItems(int? SectionId, int? BrandId, int Page = 1)
+        public async Task<IActionResult> GetFiltredItems(int? SectionId, int? BrandId, int Page = 1)
         {
             var products = GetProducts(SectionId, BrandId, Page);
+            await Task.Delay(2000);
             return PartialView("Partial/_FeaturesItems", products);
         }
 
@@ -85,6 +87,7 @@ namespace WebStore.Controllers
                Page = Page,
                PageSize = int.Parse(_Configuration[PageSize])
             });
+
             return products_model.Products.Select(p => new ProductViewModel
             {
                 Id = p.Id,
