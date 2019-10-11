@@ -27,5 +27,7 @@ namespace WebStore.Controllers
 
             return PartialView("Partial/_DataView", DateTime.Now);
         }
+
+        public IActionResult SignalRTest() => View();
     }
 }
