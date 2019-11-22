@@ -17,18 +17,17 @@ namespace WebStore.Tests.Controllers
     public class WebApiTestControllerTests
     {
         private WebApiTestController _Controller;
-        private string[] _ExpectedValues = { "1", "2", "3" };
+        private Mock<IValuesService> _ValueServiceMock = new Mock<IValuesService>();
+        private readonly string[] _ExpectedValues = { "1", "2", "3" };
 
         [TestInitialize]
         public void Initialize()
         {
-            var value_servce_mock = new Mock<IValuesService>();
-
-            value_servce_mock
+            _ValueServiceMock
                .Setup(service => service.GetAsync())
                .ReturnsAsync(_ExpectedValues);
 
-            _Controller = new WebApiTestController(value_servce_mock.Object);
+            _Controller = new WebApiTestController(_ValueServiceMock.Object);
         }
 
         [TestMethod]
@@ -40,6 +39,8 @@ namespace WebStore.Tests.Controllers
             var model = Assert.IsAssignableFrom<IEnumerable<string>>(view_result.Model);
 
             Assert.Equal(_ExpectedValues.Length, model.Count());
+            _ValueServiceMock.Verify(service => service.GetAsync());
+            _ValueServiceMock.VerifyNoOtherCalls();
         }
     }
 }
